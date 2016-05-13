@@ -1,4 +1,4 @@
-var colors = ["#B5DA45","#8DD6F0","#D551D3","#DAD361","#F38636"];
+var colors = ["#87D370","#F7E062","#D0DB54","#DAD361","#F38636"];
 window.onload=function(){
 		var canvas = document.querySelector('canvas');
 		var cxt=canvas.getContext("2d");
@@ -11,6 +11,7 @@ window.onload=function(){
         canvas.width = window_width;
         canvas.height = window_height;
 		Createball();
+        //创建小球
         function Createball(){
             var aball={
             	x:0,
@@ -27,11 +28,10 @@ window.onload=function(){
         }
 		
         
-        draw();     
+        draw(); 
+        //画出小球    
         function draw(){
         	cxt.clearRect(0,0,window_width,window_height);
-   //          cxt.fillStyle="#C6DDC0";
-			// cxt.fillRect(0,0,window_width,window_height);
 			for (var i=0;i<balls.length;i++){
                     balls[i].x += balls[i].vX;
                     balls[i].y += balls[i].vY;
@@ -53,7 +53,7 @@ window.onload=function(){
                         balls[i].vY *= -1;
                     }
 
-                    for(var j=0; j<balls.length; j++)
+                    for(var j=0; j<balls.length; j++){
                         if(j!==i){
                         	var bx = balls[i].x-balls[j].x;
                         	var by = balls[i].y-balls[j].y;
@@ -67,27 +67,20 @@ window.onload=function(){
                                 balls[j].vY=tempY;
                             }
                         }
-                        cxt.beginPath();
-                        cxt.arc(balls[i].x,balls[i].y,balls[i].r,0,Math.PI*2,true);
-                        cxt.closePath();
+                    }
+                    cxt.beginPath();
+                    cxt.arc(balls[i].x,balls[i].y,balls[i].r,0,Math.PI*2,true);
+                    cxt.closePath();
 
-                        var g = cxt.createRadialGradient(balls[i].x,balls[i].y,0,balls[i].x,balls[i].y,r);
-                        // g.addColorStop(0,"white"); 
-                        g.addColorStop(0.9,'transparent');
-                        g.addColorStop(1,balls[i].color);
-                        cxt.fillStyle = g;
-
-                        // cxt.globalAlpha = 0.5;
-                        // cxt.fillStyle = 'rgba(255,255,255,0.6)';
-                        
-                        // cxt.shadowColor = balls[i].color;
-                        // cxt.shadowOffsetX = 5;
-                        // cxt.shadowOffsetY = 5;
-                        // cxt.shadowBlur = 20;
-                        cxt.fill(); 
-                        // cxt.strokeStyle = balls[i].color;
-                        // cxt.lineWidth = 2;
-                        // cxt.stroke();
+                    var g = cxt.createRadialGradient(balls[i].x-70,balls[i].y-36,0,balls[i].x,balls[i].y,r+10);
+                    g.addColorStop(0,"transparent"); 
+                    g.addColorStop(1,balls[i].color);
+                    cxt.fillStyle = g;
+                    cxt.globalAlpha = 0.6;
+                    cxt.fill(); 
+                    cxt.strokeStyle = balls[i].color;
+                    cxt.lineWidth = 1;
+                    cxt.stroke();
             }
             setTimeout(draw,5);
         }  
