@@ -1,38 +1,39 @@
-var colors = ["#87D370","#F7E062","#D0DB54","#DAD361","#F38636"];
-window.onload=function(){
+
+        var colors = ["#87D370","#F7E062","#D0DB54","#DAD361","#F38636"];
 		var canvas = document.querySelector('canvas');
 		var cxt=canvas.getContext("2d");
 		var r = 90;
 		var Num=8;
-		var i = 0;
-		var balls=new Array();
+		var n = 0;
+        var timer;
+		var balls = new Array();
 		var window_width = document.body.clientWidth || document.documentElement.clientWidth;
         var window_height = document.body.clientHeight || document.documentElement.clientHeight;
         canvas.width = window_width;
         canvas.height = window_height;
-		Createball();
-        //创建小球
-        function Createball(){
-            var aball={
-            	x:0,
-				y:window_height,
-				r:r,
-				vX:getRandomNumber(0.8, 2),
-				vY:getRandomNumber(0.8, 2),
-				color: colors[getRandomNumber(0, colors.length-1)],
-            }
-            balls.push(aball);
-            if(++i < Num){
-				setTimeout(Createball, 1000);
-			}
-        }
-		
-        
-        draw(); 
-        //画出小球    
-        function draw(){
-        	cxt.clearRect(0,0,window_width,window_height);
-			for (var i=0;i<balls.length;i++){
+
+        var wall = {
+            s: document.getElementById('canvas'),
+            createBall:function(){
+                var aball={
+                    x:0,
+                    y:window_height,
+                    r:r,
+                    vX:getRandom(0.8, 1.2),
+                    vY:getRandom(0.8, 1.5),
+                    color:colors[getRandom(0, colors.length-1)]
+                }
+                if(++n <= Num){
+                    balls.push(aball);
+                    setTimeout(wall.createBall, 1000);
+                }
+            },
+            drawBall:function(){
+                // var = this;
+                cxt.clearRect(0,0,window_width,window_height);
+                cxt.fillStyle = "#6F964E";
+                cxt.fillRect(0,0,window_width,window_height);
+                for (var i=0;i<balls.length;i++){
                     balls[i].x += balls[i].vX;
                     balls[i].y += balls[i].vY;
                                         
@@ -55,9 +56,9 @@ window.onload=function(){
 
                     for(var j=0; j<balls.length; j++){
                         if(j!==i){
-                        	var bx = balls[i].x-balls[j].x;
-                        	var by = balls[i].y-balls[j].y;
-                        	var dist = Math.sqrt(bx*bx + by*by);
+                            var bx = balls[i].x-balls[j].x;
+                            var by = balls[i].y-balls[j].y;
+                            var dist = Math.sqrt(bx*bx + by*by);
                             if( dist < (r*2)) {
                                 var tempX=balls[i].vX;
                                 var tempY=balls[i].vY;
@@ -76,16 +77,32 @@ window.onload=function(){
                     g.addColorStop(0,"transparent"); 
                     g.addColorStop(1,balls[i].color);
                     cxt.fillStyle = g;
-                    cxt.globalAlpha = 0.6;
+
+                    // cxt.globalAlpha = 0.6;
                     cxt.fill(); 
                     cxt.strokeStyle = balls[i].color;
                     cxt.lineWidth = 1;
                     cxt.stroke();
-            }
-            setTimeout(draw,5);
-        }  
-        //获取随机数
-		function getRandomNumber(min, max) {
+                }
+                setTimeout(wall.drawBall,10);
+            },
+            screen:function(){
+                this.s.style.display = 'block';
+            },
+            hide:function(){
+                this.s.style.display = 'none';
+            },
+        };
+        function getRandom(min, max) {
             return (Math.floor(Math.random() * (max - min + 1)) + min);
-        }
-}
+        };
+        document.onmousemove = function(){
+                wall.hide();
+                clearTimeout(timer);
+                timer = setTimeout(function(){
+                    wall.screen();
+                    wall.createBall();
+                    wall.drawBall();
+                },3000)
+            },
+        wall.hide();
