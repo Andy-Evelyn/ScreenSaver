@@ -21,7 +21,7 @@
                     y:window_height,
                     r:that.r,
                     vX:that.getRandom(0.8, 1.2),
-                    vY:that.getRandom(0.8, 1.5),
+                    vY:that.getRandom(1.2, 1.5),
                     color:colors[that.getRandom(0, colors.length-1)]
                 }
                 if(++(that.n) <= that.Num){
@@ -30,7 +30,6 @@
                         that.createBall();
                     }, 1000);
                 }
-                // console.log(balls.length);
             },
             drawBall:function(){
                 var that = this;
@@ -103,15 +102,21 @@
             getRandom:function(min, max){
                 return (Math.floor(Math.random() * (max - min + 1)) + min);
             },
-
         };
-        document.onmousemove = function(){
+
+        function event(){
                 wall.hide();
+                balls.length = 0;
+                wall.n = 0;
                 clearTimeout(wall.timer);
                 wall.timer = setTimeout(function(){
                     wall.createBall();
                     wall.drawBall();
                     wall.screen();
                 },3000)
-        };
+        }
+        document.onmousemove  = function(){event()};
+        document.onkeydown = function(){event()};
+
         wall.hide();
+
