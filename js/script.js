@@ -3,8 +3,8 @@
 		var canvas = document.querySelector('canvas');
 		var cxt=canvas.getContext("2d");
 		var balls = new Array();
-		var window_width = document.body.clientWidth || document.documentElement.clientWidth;
-        var window_height = document.body.clientHeight || document.documentElement.clientHeight;
+		var window_width = document.documentElement.clientWidth;
+        var window_height = document.documentElement.clientHeight;
         canvas.width = window_width;
         canvas.height = window_height;
 
